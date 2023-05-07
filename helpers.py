@@ -71,6 +71,7 @@ def searchForCourses(driver):
     subject_drop_down = Select(driver.find_element(By.CSS_SELECTOR, "select#subj_id"))
     subject_drop_down.select_by_visible_text("Computer Science")
     campus_drop_down = Select(driver.find_element(By.CSS_SELECTOR, "select#camp_id"))
+    campus_drop_down.deselect_all()
     campus_drop_down.select_by_visible_text("Byblos")
 
     # Click on "Section Search" button
