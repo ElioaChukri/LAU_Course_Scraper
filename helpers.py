@@ -1,9 +1,7 @@
 import csv
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver import Keys
-
+from selenium.webdriver.support.ui import WebDriverWait, Select
 
 def loadFile():
     """
@@ -37,17 +35,33 @@ def login(driver, username, password):
     wait.until(EC.url_matches(landing_page))
 
 
-def navigateToSearch(driver):
+def searchForCourses(driver):
     """
-    Navigates to the course search page on banner
-    :param driver:
-    :return:
+    Navigates to the search page, chooses the proper term and options, and searches for the wanted courses
+    :param driver: the selenium webdriver
+    :return: the courses page html
     """
 
-    driver.get("https://banweb.lau.edu.lb/prod/twbkwbis.P_GenMenu?name=bmenu.P_RegMnu")
-    options = driver.find_elements(By.CSS_SELECTOR, "td > a")
-    for element in options:
-        visible_text = element.accessible_name.lower()
-        if visible_text == "look-up classes to add":
-            element.click()
-            break
+    # Navigate to the search page
+    driver.get("https://banweb.lau.edu.lb/prod/bwskfcls.p_sel_crse_search")
+
+    # Select the proper term from the dropdown menu and click submit
+    term_drop_down = Select(driver.find_element(By.CSS_SELECTOR, "select#term_input_id"))
+    term_drop_down.select_by_visible_text("Fall 2023 (View only)")
+    driver.find_element(By.XPATH, "/html/body/div[3]/form/input[2]").click()
+
+    # Click on advanced search
+    driver.find_element(By.XPATH, "/html/body/div[3]/form/input[18]").click()
+
+    # Select the proper options for the search
+    subject_drop_down = Select(driver.find_element(By.CSS_SELECTOR, "select#subj_id"))
+    subject_drop_down.select_by_visible_text("Computer Science")
+    campus_drop_down = Select(driver.find_element(By.CSS_SELECTOR, "select#camp_id"))
+    campus_drop_down.select_by_visible_text("Byblos")
+
+    # Click on "Section Search" button
+    driver.find_element(By.XPATH, "/html/body/div[3]/form/span/input[1]").click()
+
+    return driver.page_source
+
+

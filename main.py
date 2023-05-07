@@ -1,6 +1,6 @@
 import csv
 from driver import initializeDriver
-from helpers import loadFile, login, navigateToSearch
+from helpers import loadFile, login, searchForCourses
 
 
 def main():
@@ -8,7 +8,8 @@ def main():
     driver = initializeDriver()
     driver.get("https://myportal.lau.edu.lb/")
     login(driver, username, password)
-    navigateToSearch(driver)
+    courses_page = searchForCourses(driver)
+    print(courses_page)
 
 
 if __name__ == "__main__":
