@@ -23,7 +23,7 @@ def writeCsv(rows):
     :return: None
     """
     with open("output.csv", "w") as f:
-        csv_writer = csv.writer(f)
+        csv_writer = csv.writer(f, quoting=csv.QUOTE_ALL)
         csv_writer.writerow(rows[0])
         csv_writer.writerows(rows[1:])
 
@@ -80,6 +80,11 @@ def searchForCourses(driver):
 
 
 def parseCourses(html):
+    """
+    Parses the courses page html using bs4 and returns a list of lists containing the courses data
+    :param html: the html source code of the page we wish to extract course data from
+    :return: data_list: a list of lists containing the courses data
+    """
     soup = BeautifulSoup(html, "html.parser")
     table = soup.select_one("table.datadisplaytable > tbody")
     data = table.select("tr")
@@ -97,4 +102,5 @@ def parseCourses(html):
         for td in tr.select("td"):
             row.append(td.text.strip())
         data_list.append(row)
-    writeCsv(data_list)
+
+    return data_list

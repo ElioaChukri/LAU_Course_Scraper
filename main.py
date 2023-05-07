@@ -1,5 +1,5 @@
 from driver import initializeDriver
-from helpers import loadFile, login, searchForCourses, parseCourses
+from helpers import loadFile, login, searchForCourses, parseCourses, writeCsv
 
 
 def main():
@@ -8,7 +8,9 @@ def main():
     driver.get("https://myportal.lau.edu.lb/")
     login(driver, username, password)
     courses_page = searchForCourses(driver)
-    parseCourses(courses_page)
+    data = parseCourses(courses_page)
+    writeCsv(data)
+    print("Done!")
 
 
 if __name__ == "__main__":
