@@ -1,8 +1,21 @@
 from selenium import webdriver
-from selenium.webdriver.common.by import By
-from selenium.webdriver.support import expected_conditions as EC
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver import Keys
+from webdriver_manager.chrome import ChromeDriverManager
+
+
+def checkDriver():
+    """
+    Checks if the driver is installed on the system
+    :return: None
+    """
+
+    try:
+        driver = webdriver.Chrome()
+    except:
+        print("Driver not installed. Installing...")
+        ChromeDriverManager().install()
+        print("Driver installed successfully.")
+    else:
+        driver.quit()
 
 
 def initializeDriver():
