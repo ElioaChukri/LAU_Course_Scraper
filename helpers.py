@@ -2,6 +2,8 @@ import csv
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait, Select
+from bs4 import BeautifulSoup
+
 
 def loadFile():
     """
@@ -12,6 +14,18 @@ def loadFile():
         csv_reader = csv.DictReader(f)
         for row in csv_reader:
             return row["username"], row["password"]
+
+
+def writeCsv(rows):
+    """
+    Writes the given rows to the output.csv file
+    :param rows: the rows to write to the file
+    :return: None
+    """
+    with open("output.csv", "w") as f:
+        csv_writer = csv.writer(f)
+        csv_writer.writerow(rows[0])
+        csv_writer.writerows(rows[1:])
 
 
 def login(driver, username, password):
@@ -65,3 +79,22 @@ def searchForCourses(driver):
     return driver.page_source
 
 
+def parseCourses(html):
+    soup = BeautifulSoup(html, "html.parser")
+    table = soup.select_one("table.datadisplaytable > tbody")
+    data = table.select("tr")
+    data_list = []
+
+    # First row elements are the headers
+    row = []
+    for th in data[1].select("th"):
+        row.append(th.text.strip())
+    data_list.append(row)
+
+    # Rest of the rows are the courses
+    for tr in data[2:]:
+        row = []
+        for td in tr.select("td"):
+            row.append(td.text.strip())
+        data_list.append(row)
+    writeCsv(data_list)
