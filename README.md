@@ -17,6 +17,11 @@ cd LAU_Course_Scraper
 pip install -r requirements.txt
 ```
 
+## Providing Credentials
+
+Edit the credentials.csv file with your username and password.  
+Make sure to preserve the csv formatting!
+
 ## Usage
 
 > Chrome/Chromium needs to be installed on your system
