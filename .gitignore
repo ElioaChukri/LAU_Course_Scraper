@@ -1,5 +1,4 @@
 venv/
 .idea/
-credentials.csv
 __pycache__/
 output.csv
